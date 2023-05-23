@@ -10,6 +10,8 @@ public class InverseKinematicArm : MonoBehaviour
 
     [SerializeField]
     private Transform target; //Position the armature end will try to reach
+    [SerializeField]
+    private Transform pole; //Position of the pole the armature will attempt to bend towards
 
     [SerializeField]
     private int iterations = 10; //How many times to iterate the armature's calculations
@@ -102,6 +104,27 @@ public class InverseKinematicArm : MonoBehaviour
 
                 //check if the end of the armature is within the minimum distance
                 if ((positions[positions.Length - 1] - target.position).sqrMagnitude < delta * delta) break;
+            }
+        }
+
+        //Move to bend towards the pole
+        if (pole != null)
+        {
+            //for every position after the end point on the armature
+            for (int i = 1; i < positions.Length - 1; i++)
+            {
+                //Create a plane for working out how to place each bone to bend towards the pole
+                Plane plane = new Plane(positions[i + 1] - positions[i - 1], positions[i - 1]);
+
+                //Get the positions of both the pole and the current bone on the plane
+                Vector3 projectedPole = plane.ClosestPointOnPlane(pole.position);
+                Vector3 projectedBone = plane.ClosestPointOnPlane(positions[i]);
+
+                //Get the angle around the centre of the plane to move the bone so that it is nearest the pole position
+                float angle = Vector3.SignedAngle(projectedBone - positions[i - 1], projectedPole - positions[i - 1], plane.normal);
+
+                //Move the current bone by the angle given to the position nearest the pole
+                positions[i] = Quaternion.AngleAxis(angle, plane.normal) * (positions[i] - positions[i - 1]) + positions[i - 1];
             }
         }
 
