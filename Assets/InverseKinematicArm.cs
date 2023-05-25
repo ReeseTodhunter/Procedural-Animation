@@ -5,6 +5,8 @@ using UnityEditor;
 
 public class InverseKinematicArm : MonoBehaviour
 {
+    #region Armature Variables
+
     [SerializeField]
     private int chainLength = 3; //Length of the armature
 
@@ -23,6 +25,9 @@ public class InverseKinematicArm : MonoBehaviour
     protected Transform[] bones;
     protected Vector3[] positions;
 
+    #endregion
+
+    #region Armature Initalisation
     private void Awake()
     {
         Init();
@@ -38,22 +43,25 @@ public class InverseKinematicArm : MonoBehaviour
         completeLength = 0;
 
         //Initalize array data
-        var current = transform;
-        for (var i = bones.Length - 1; i >= 0; i--)
+        Transform currentTransform = transform;
+        for (int i = bones.Length - 1; i >= 0; i--)
         {
-            bones[i] = current;
+            bones[i] = currentTransform;
 
             //if not the last bone in the armature add to the bone length + complete length
             if (i != bones.Length - 1)
             {
-                bonesLength[i] = (bones[i + 1].position - current.position).magnitude;
+                bonesLength[i] = (bones[i + 1].position - currentTransform.position).magnitude;
                 completeLength += bonesLength[i];
             }
 
-            current = current.parent;
+            //Continue up the armature to the root
+            currentTransform = currentTransform.parent;
         }
     }
+    #endregion
 
+    #region Calculate Armature movements
     private void LateUpdate()
     {
         InverseKinematics();
@@ -132,6 +140,43 @@ public class InverseKinematicArm : MonoBehaviour
         for (int i = 0; i < positions.Length; i++) bones[i].position = positions[i];
     }
 
+    #endregion
+
+    #region Armature Getters
+
+    public Transform GetTarget()
+    {
+        //Return a null value if there is no setup target
+        if (target == null) return null;
+        return target;
+    }
+
+    public Transform GetRoot()
+    {
+        //If bones aren't setup return a null value before trying to access index 0
+        if (bones == null) return null;
+        return bones[0];
+    }
+
+    public float GetLength()
+    {
+        //If there is no complete length stetup return 0
+        if (completeLength == null) return 0;
+        return completeLength;
+    }
+
+    #endregion
+
+    #region Armature Setters
+
+    public void SetTarget(Vector3 a_target)
+    {
+        target.position = a_target;
+    }
+
+    #endregion
+
+    #region Gizmos
     private void OnDrawGizmos()
     {
         var current = this.transform;
@@ -145,4 +190,6 @@ public class InverseKinematicArm : MonoBehaviour
             current = current.parent;
         }
     }
+
+    #endregion
 }
