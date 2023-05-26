@@ -1504,7 +1504,9 @@ MonoBehaviour:
   armatures:
   - {fileID: 1399156848}
   - {fileID: 2008896353}
+  StepSpeed: 5
   strideLength: 5
+  minDistanceToTarget: 0.1
 --- !u!1 &1916305918
 GameObject:
   m_ObjectHideFlags: 0
