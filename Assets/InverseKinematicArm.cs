@@ -33,7 +33,7 @@ public class InverseKinematicArm : MonoBehaviour
         Init();
     }
 
-    private void Init()
+    protected virtual void Init()
     {
         //Initalize array
         bones = new Transform[chainLength + 1];

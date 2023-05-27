@@ -27,6 +27,18 @@ public class IK_LegArmature : InverseKinematicArm
     protected float horizontalPercentageComplete; //Percentage horizontal movement update is done
     protected float verticalPercentageComplete; //Percentage vertical movement update is done
 
+    protected bool isGrounded; //Contains if the foot of the armature is grounded or not
+
+    #endregion
+
+    #region Leg Armature Initalisation
+
+    protected override void Init()
+    {
+        base.Init();
+        isGrounded = false;
+    }
+
     #endregion
 
     #region Update Armature
@@ -70,16 +82,18 @@ public class IK_LegArmature : InverseKinematicArm
 
             //Update the targets position;
             target.position = targetMovement;
-            //Return without checking for movement if currently moving
-            return;
         }
-        CheckMovement();
+        else
+        {
+            //Set that the foot is grounded
+            isGrounded = true;
+        }
     }
 
-    private void CheckMovement()
+    public void CheckMovement()
     {
         //Cast a ray from the root of the armature to the floor ahead
-        if (Physics.Raycast(bones[0].position, new Vector3(1, -3, 0).normalized, out var hit, completeLength, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(bones[0].position, new Vector3(2, -3, 0).normalized, out var hit, completeLength, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore))
         {
             //If the distance from the ray hit point to the current target position is greater than the set stride length update the new target position
             if (Vector3.Distance(hit.point, target.position) >= strideLength)
@@ -100,8 +114,31 @@ public class IK_LegArmature : InverseKinematicArm
                 //Reset the total elapsed movement time
                 horizontalElapsedTime = 0.0f;
                 verticalElapsedTime = 0.0f;
+
+                //Set that the foot is no longer grounded
+                isGrounded = false;
             }
         }
+    }
+
+    #endregion
+
+    #region Gizmos
+
+    protected override void OnDrawGizmos()
+    {
+        base.OnDrawGizmos();
+        //Set base of the armature as staring pos
+        Transform startPos = transform;
+
+        //For every node in the chain
+        for (int i = 0; i < chainLength - 1; i++)
+        {
+            //update the starting position to be the parent of the current start position to get the root node
+            startPos = startPos.parent;
+        }
+        //Draw a line from the root node to the end of the complete raycast
+        Gizmos.DrawLine(startPos.position, startPos.position + new Vector3(2, -3, 0).normalized * completeLength);
     }
 
     #endregion
