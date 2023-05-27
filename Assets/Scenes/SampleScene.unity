@@ -1272,6 +1272,9 @@ MonoBehaviour:
   pole: {fileID: 981595768}
   iterations: 1
   delta: 1
+  stepTime: 1
+  strideLength: 5
+  stepHeight: 5
 --- !u!23 &1399156850
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1461,7 +1464,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1789144979}
-  - component: {fileID: 1789144980}
   m_Layer: 0
   m_Name: Walker
   m_TagString: Untagged
@@ -1477,7 +1479,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1789144978}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1489,24 +1491,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1789144980
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1789144978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2809120f8f173c544845f4b48daf93cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  armatures:
-  - {fileID: 1399156848}
-  - {fileID: 2008896353}
-  StepSpeed: 5
-  strideLength: 5
-  minDistanceToTarget: 0.1
 --- !u!1 &1916305918
 GameObject:
   m_ObjectHideFlags: 0
@@ -1656,6 +1640,9 @@ MonoBehaviour:
   pole: {fileID: 104047105}
   iterations: 1
   delta: 1
+  stepTime: 1
+  strideLength: 5
+  stepHeight: 5
 --- !u!23 &2008896355
 MeshRenderer:
   m_ObjectHideFlags: 0

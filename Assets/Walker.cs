@@ -49,71 +49,7 @@ public class Walker : MonoBehaviour
 
     private void LateUpdate()
     {
-        UpdateTarget();
-    }
 
-    private void UpdateTarget()
-    {
-        if (newTarget != Vector3.zero && (armatures[0].GetTarget().position != newTarget))
-        {
-            elapsedTime += Time.deltaTime;
-            percentageComplete = elapsedTime / stepTime;
-            //Vector3 currentPosition = arm.GetTarget().position;
-
-            horizontalPosition = Vector3.Lerp(previousTarget, newTarget, percentageComplete);
-
-            if (percentageComplete < 0.5)
-            {
-                verticalPercentageComplete = elapsedTime / (stepTime / 2);
-                verticalPosition = Vector3.Lerp(previousTarget, midPoint, percentageComplete);
-            }
-            else
-            {
-                verticalPercentageComplete = elapsedTime / (stepTime / 2);
-                verticalPosition = Vector3.Lerp(midPoint, newTarget, percentageComplete);
-            }
-
-            armatures[0].SetTarget(new Vector3(horizontalPosition.x, verticalPosition.y, horizontalPosition.z));
-            //armatures[0].SetTarget(horizontalPosition);
-            return;
-        }
-        CheckMovement();
-    }
-
-    private void CheckMovement()
-    {
-        foreach (InverseKinematicArm arm in armatures)
-        {
-            if (Physics.Raycast(arm.GetRoot().position, new Vector3(1, -3, 0).normalized, out var hit, arm.GetLength(), LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore))
-            {
-                //If the ray hit position is at the strideLength or greater move the armatures target
-                if (Vector3.Distance(hit.point, arm.GetTarget().position) >= strideLength)
-                {
-                    previousTarget = arm.GetTarget().position;
-                    midPoint = (hit.point - previousTarget)/2 + previousTarget;
-                    midPoint.y += stepHeight;
-                    newTarget = hit.point;
-                    elapsedTime = 0.0f;
-                    return;
-                    //arm.SetTarget(hit.point);
-                }
-            }
-        }
-    }
-
-    #endregion
-
-    #region Gizmos
-
-    private void OnDrawGizmos()
-    {
-        foreach (InverseKinematicArm arm in armatures)
-        {
-            if(arm.GetRoot() != null)
-            {
-                Gizmos.DrawLine(arm.GetRoot().position, arm.GetRoot().position + ((new Vector3(1, -3, 0)).normalized * arm.GetLength()));
-            }
-        }
     }
 
     #endregion
