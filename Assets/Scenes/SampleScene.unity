@@ -1232,7 +1232,7 @@ GameObject:
   - component: {fileID: 1399156847}
   - component: {fileID: 1399156851}
   - component: {fileID: 1399156850}
-  - component: {fileID: 1399156848}
+  - component: {fileID: 1399156852}
   m_Layer: 0
   m_Name: Sphere 1
   m_TagString: Untagged
@@ -1255,26 +1255,6 @@ Transform:
   m_Father: {fileID: 119753597}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1399156848
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1399156846}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e0066f87072d6c4b8a16b85e9f75ad4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  chainLength: 2
-  target: {fileID: 2073640764}
-  pole: {fileID: 981595768}
-  iterations: 1
-  delta: 1
-  stepTime: 1
-  strideLength: 5
-  stepHeight: 5
 --- !u!23 &1399156850
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1325,6 +1305,26 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1399156846}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1399156852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399156846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eae2c47cd72cd045b396445746dcaa6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chainLength: 3
+  target: {fileID: 2073640764}
+  pole: {fileID: 981595768}
+  iterations: 1
+  delta: 1
+  stepTime: 1
+  strideLength: 5
+  stepHeight: 5
 --- !u!1 &1451494124
 GameObject:
   m_ObjectHideFlags: 0
@@ -1600,7 +1600,7 @@ GameObject:
   - component: {fileID: 2008896352}
   - component: {fileID: 2008896356}
   - component: {fileID: 2008896355}
-  - component: {fileID: 2008896353}
+  - component: {fileID: 2008896357}
   m_Layer: 0
   m_Name: Sphere 1
   m_TagString: Untagged
@@ -1623,26 +1623,6 @@ Transform:
   m_Father: {fileID: 48332475}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2008896353
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2008896351}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e0066f87072d6c4b8a16b85e9f75ad4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  chainLength: 2
-  target: {fileID: 86509768}
-  pole: {fileID: 104047105}
-  iterations: 1
-  delta: 1
-  stepTime: 1
-  strideLength: 5
-  stepHeight: 5
 --- !u!23 &2008896355
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1693,6 +1673,26 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2008896351}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2008896357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2008896351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eae2c47cd72cd045b396445746dcaa6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chainLength: 3
+  target: {fileID: 86509768}
+  pole: {fileID: 104047105}
+  iterations: 1
+  delta: 1
+  stepTime: 1
+  strideLength: 5
+  stepHeight: 5
 --- !u!1 &2033408173
 GameObject:
   m_ObjectHideFlags: 0
