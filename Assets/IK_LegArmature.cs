@@ -123,6 +123,15 @@ public class IK_LegArmature : InverseKinematicArm
 
     #endregion
 
+    #region Leg Getters
+
+    public bool IsGrounded()
+    {
+        return isGrounded;
+    }
+
+    #endregion
+
     #region Gizmos
 
     protected override void OnDrawGizmos()
