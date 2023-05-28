@@ -110,7 +110,7 @@ public class IK_LegArmature : InverseKinematicArm
     public void UpdateTarget()
     {
         //If the distance from the ray hit point to the current target position is greater than the set stride length update the new target position
-        if (Vector3.Distance(rayHitPosition, target.position) >= strideLength)
+        if (Vector3.Distance(rayHitPosition, target.position) > strideLength)
         {
             //Get the previous targeted position
             previousTargetPosition = target.position;
