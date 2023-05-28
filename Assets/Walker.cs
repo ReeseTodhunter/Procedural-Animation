@@ -9,8 +9,10 @@ public class Walker : MonoBehaviour
 
     public legPair[] legPairs;
 
-    public float walkSpeed = 3;
-    public bool turn = false;
+    public float walkSpeed = 5;
+
+    private Vector3 currentPosition;
+    private Vector3 currentVelocity;
 
     private void Start()
     {
@@ -25,6 +27,7 @@ public class Walker : MonoBehaviour
 
     private void Init()
     {
+        currentPosition = transform.position;
         legPairs = new legPair[legs.Count / 2];
         for (int i = 0, p = 0; i < legPairs.Length - 1; i++, p += 2)
         {
@@ -43,10 +46,13 @@ public class Walker : MonoBehaviour
 
     private void MoveWalker()
     {
-        transform.position += transform.right * Time.deltaTime * walkSpeed;
-        if (turn)
+        currentVelocity = -(currentPosition - transform.position) / Time.deltaTime;
+        currentPosition = transform.position;
+        //Allow player to control walker with arrow keys / WASD
+        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
         {
-            transform.eulerAngles += Vector3.up * Time.deltaTime * (walkSpeed / 2);
+            transform.position += transform.right * Input.GetAxisRaw("Horizontal") * walkSpeed * Time.deltaTime;
+            transform.position += transform.forward * Input.GetAxisRaw("Vertical") * walkSpeed * Time.deltaTime;
         }
     }
 
@@ -58,11 +64,11 @@ public class Walker : MonoBehaviour
             {
                 if (legs[i].IsGrounded() && legs[i + 1].IsGrounded())
                 {
-                    legs[i].CheckMovement();
+                    legs[i].CheckMovement(currentVelocity);
                 }
                 if (legs[i].IsGrounded() && legs[i + 1].IsGrounded())
                 {
-                    legs[i + 1].CheckMovement();
+                    legs[i + 1].CheckMovement(currentVelocity);
                 }
             }
         }

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class IK_Armature : MonoBehaviour
 {
-    [SerializeField]
-    int armatureSize = 0;
+    //[SerializeField]
+    //int armatureSize = 0;
 
     [SerializeField]
     private Transform armatureTarget;

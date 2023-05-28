@@ -15,6 +15,8 @@ public class IK_LegArmature : InverseKinematicArm
     [SerializeField]
     private float stepHeight = 5.0f; //Amount to raise end of armature during steps
 
+    protected Vector3 directionToCastRay; //Direction to cast ray check in
+
     protected Vector3 previousTargetPosition; //Position of the last target
     protected Vector3 midPointPosition; //Stores the middle position of target movement
     protected Vector3 newTargetPosition; //Position of the new target
@@ -90,10 +92,13 @@ public class IK_LegArmature : InverseKinematicArm
         }
     }
 
-    public void CheckMovement()
+    public void CheckMovement(Vector3 a_velocity)
     {
+        //Work out the direction to cast the ray based on the current velocity
+        directionToCastRay = new Vector3(a_velocity.x, -(Mathf.Sin(Mathf.Acos(a_velocity.magnitude / completeLength)) * completeLength), a_velocity.z).normalized;
+
         //Cast a ray from the root of the armature to the floor ahead
-        if (Physics.Raycast(bones[0].position, new Vector3(2, -3, 0).normalized, out var hit, completeLength, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(bones[0].position, directionToCastRay, out var hit, completeLength, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore))
         {
             //If the distance from the ray hit point to the current target position is greater than the set stride length update the new target position
             if (Vector3.Distance(hit.point, target.position) >= strideLength)
@@ -147,7 +152,7 @@ public class IK_LegArmature : InverseKinematicArm
             startPos = startPos.parent;
         }
         //Draw a line from the root node to the end of the complete raycast
-        Gizmos.DrawLine(startPos.position, startPos.position + new Vector3(2, -3, 0).normalized * completeLength);
+        Gizmos.DrawLine(startPos.position, startPos.position + directionToCastRay * completeLength);
     }
 
     #endregion
