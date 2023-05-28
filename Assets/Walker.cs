@@ -52,21 +52,17 @@ public class Walker : MonoBehaviour
 
     private void UpdateLegs()
     {
-        for(int i = 0; i < legs.Count; i++)
+        for(int i = 0; i < legs.Count; i += 2)
         {
-            //Check if the i is even
-            if (i % 2 == 0)
+            if (legs[i + 1] != null)
             {
-                if (legs[i + 1] != null && legs[i + 1].IsGrounded())
+                if (legs[i].IsGrounded() && legs[i + 1].IsGrounded())
                 {
                     legs[i].CheckMovement();
                 }
-            }
-            else
-            {
-                if (legs[i - 1] != null && legs[i - 1].IsGrounded())
+                if (legs[i].IsGrounded() && legs[i + 1].IsGrounded())
                 {
-                    legs[i].CheckMovement();
+                    legs[i + 1].CheckMovement();
                 }
             }
         }

@@ -141,7 +141,7 @@ public class IK_LegArmature : InverseKinematicArm
         Transform startPos = transform;
 
         //For every node in the chain
-        for (int i = 0; i < chainLength - 1; i++)
+        for (int i = 0; i < chainLength; i++)
         {
             //update the starting position to be the parent of the current start position to get the root node
             startPos = startPos.parent;
