@@ -761,8 +761,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 478250372}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.7, z: 0}
-  m_LocalScale: {x: 2, y: 3.5, z: 2}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 2.5, y: 3.5, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1388483548}
@@ -1503,7 +1503,7 @@ Transform:
   - {fileID: 104047105}
   - {fileID: 981595768}
   m_Father: {fileID: 1789144979}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1388483547
 GameObject:
@@ -1537,7 +1537,7 @@ Transform:
   - {fileID: 1495733664}
   - {fileID: 976409669}
   m_Father: {fileID: 1789144979}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &1399156846
 GameObject:
@@ -1640,8 +1640,8 @@ MonoBehaviour:
   pole: {fileID: 981595768}
   iterations: 1
   delta: 1
-  stepTime: 0.5
-  strideLength: 5
+  stepTime: 0.1
+  maxStrideLength: 5
   stepHeight: 3
 --- !u!1 &1451494124
 GameObject:
@@ -1880,19 +1880,19 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1789144978}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6, z: 0}
+  m_LocalRotation: {x: 0.006856817, y: 0.016047958, z: -0.0000494338, w: 0.99984777}
+  m_LocalPosition: {x: 0, y: 0.6, z: -0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 963194228}
-  - {fileID: 1388483548}
   - {fileID: 1298704106}
+  - {fileID: 1388483548}
   - {fileID: 1264701528}
   - {fileID: 2033408174}
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.786, y: 1.839, z: 0.007}
 --- !u!114 &1789144980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1909,6 +1909,7 @@ MonoBehaviour:
   - {fileID: 2008896357}
   - {fileID: 1399156852}
   walkSpeed: 5
+  rotateSpeed: 3
 --- !u!1 &1916305918
 GameObject:
   m_ObjectHideFlags: 0
@@ -2108,8 +2109,8 @@ MonoBehaviour:
   pole: {fileID: 104047105}
   iterations: 1
   delta: 1
-  stepTime: 0.5
-  strideLength: 5
+  stepTime: 0.1
+  maxStrideLength: 5
   stepHeight: 3
 --- !u!1 &2033408173
 GameObject:

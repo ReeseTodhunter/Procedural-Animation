@@ -7,9 +7,10 @@ public class Walker : MonoBehaviour
     [SerializeField]
     List<IK_LegArmature> legs = null; //A list of all the walkers legs
 
-    public legPair[] legPairs;
+    public List<legPair> legPairs;
 
-    public float walkSpeed = 5;
+    public float walkSpeed = 5.0f;
+    public float rotateSpeed = 3.0f;
 
     private Vector3 currentPosition;
     private Vector3 currentVelocity;
@@ -27,27 +28,36 @@ public class Walker : MonoBehaviour
 
     private void Init()
     {
+        //Setup the starting current position
         currentPosition = transform.position;
-        legPairs = new legPair[legs.Count / 2];
-        for (int i = 0, p = 0; i < legPairs.Length - 1; i++, p += 2)
+
+        //Create the list of legPairs
+        legPairs = new List<legPair>();
+
+        //Run a loop through all of the leg armatures in the list of legs
+        for (int i = 0, p = 0; i < legs.Count; i += 2, p++)
         {
-            legPairs[i].legOne = legs[p];
-            if (legs[p + 1] != null)
+            //if the leg has a pairing leg available
+            if (i + 1 <= legs.Count - 1)
             {
-                legPairs[i].legTwo = legs[p + 1];
+                //Create a new legPair with both leg armatures and add it to the list of leg pairs
+                legPairs.Add(new legPair{ legOne = legs[i], legTwo = legs[i + 1] });
             }
+            //if there is an uneven amount of legs add the remaining leg to the list of leg pairs
             else
             {
-                legPairs[i].legTwo = legs[p];
+                legPairs.Add(new legPair { legOne = legs[i], legTwo = legs[i] });
             }
-            
         }
     }
 
     private void MoveWalker()
     {
-        currentVelocity = -(currentPosition - transform.position) / Time.deltaTime;
+        //Work out the current velocity of the walker based on it's previous position
+        currentVelocity = (transform.position - currentPosition) / Time.deltaTime;
+        //Update the walker's current position
         currentPosition = transform.position;
+
         //Allow player to control walker with arrow keys / WASD
         if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
         {
@@ -58,17 +68,26 @@ public class Walker : MonoBehaviour
 
     private void UpdateLegs()
     {
-        for(int i = 0; i < legs.Count; i += 2)
+        //For all of the pairs of legs
+        foreach (legPair pair in legPairs)
         {
-            if (legs[i + 1] != null)
+            //Check that both legs are grounded before lifting a leg
+            if (pair.legOne.IsGrounded() && pair.legTwo.IsGrounded())
             {
-                if (legs[i].IsGrounded() && legs[i + 1].IsGrounded())
+                //Update both legs raycasts
+                pair.legOne.CheckMovement(currentVelocity);
+                pair.legTwo.CheckMovement(currentVelocity);
+
+                //If leg One is further from the target than leg two
+                if (pair.legOne.DistanceToTarget() > pair.legTwo.DistanceToTarget())
                 {
-                    legs[i].CheckMovement(currentVelocity);
+                    //Update leg one's target positioning
+                    pair.legOne.UpdateTarget();
                 }
-                if (legs[i].IsGrounded() && legs[i + 1].IsGrounded())
+                else
                 {
-                    legs[i + 1].CheckMovement(currentVelocity);
+                    //Otherwise update leg two's target positioning
+                    pair.legTwo.UpdateTarget();
                 }
             }
         }

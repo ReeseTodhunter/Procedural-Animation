@@ -10,11 +10,12 @@ public class IK_LegArmature : InverseKinematicArm
     private float stepTime = 1.0f; //Time taken to complete a step
 
     [SerializeField]
-    private float strideLength = 5.0f; //Total length each step should go
+    private float maxStrideLength = 5.0f; //Total length each step should go
 
     [SerializeField]
     private float stepHeight = 5.0f; //Amount to raise end of armature during steps
 
+    protected float strideLength; //stride length based on velocity
     protected Vector3 directionToCastRay; //Direction to cast ray check in
 
     protected Vector3 previousTargetPosition; //Position of the last target
@@ -22,6 +23,7 @@ public class IK_LegArmature : InverseKinematicArm
     protected Vector3 newTargetPosition; //Position of the new target
 
     protected Vector3 targetMovement; //Stores amount to move Target by
+    protected Vector3 rayHitPosition; //Stores the position the ray is currently hitting
 
     protected float horizontalElapsedTime; //Total time passed moving armature target horizontally
     protected float verticalElapsedTime; //Total time passed moving armature target vertically
@@ -94,35 +96,41 @@ public class IK_LegArmature : InverseKinematicArm
 
     public void CheckMovement(Vector3 a_velocity)
     {
+        strideLength = maxStrideLength * a_velocity.normalized.magnitude;
         //Work out the direction to cast the ray based on the current velocity
         directionToCastRay = new Vector3(a_velocity.x, -(Mathf.Sin(Mathf.Acos(a_velocity.magnitude / completeLength)) * completeLength), a_velocity.z).normalized;
 
         //Cast a ray from the root of the armature to the floor ahead
         if (Physics.Raycast(bones[0].position, directionToCastRay, out var hit, completeLength, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore))
         {
-            //If the distance from the ray hit point to the current target position is greater than the set stride length update the new target position
-            if (Vector3.Distance(hit.point, target.position) >= strideLength)
-            {
-                //Get the previous targeted position
-                previousTargetPosition = target.position;
-                //Get the middle point of the previous target and the new target and add the step height to this
-                midPointPosition = (hit.point - previousTargetPosition) / 2 + previousTargetPosition;
-                midPointPosition.y += stepHeight;
-                
-                //===========================================================
-                //Insert obstacle detection here to avoid kicking an obstacle
-                //===========================================================
+            rayHitPosition = hit.point;
+        }
+    }
 
-                //Update the new targeted position to where the ray hit the ground
-                newTargetPosition = hit.point;
-                
-                //Reset the total elapsed movement time
-                horizontalElapsedTime = 0.0f;
-                verticalElapsedTime = 0.0f;
+    public void UpdateTarget()
+    {
+        //If the distance from the ray hit point to the current target position is greater than the set stride length update the new target position
+        if (Vector3.Distance(rayHitPosition, target.position) >= strideLength)
+        {
+            //Get the previous targeted position
+            previousTargetPosition = target.position;
+            //Get the middle point of the previous target and the new target and add the step height to this
+            midPointPosition = (rayHitPosition - previousTargetPosition) / 2 + previousTargetPosition;
+            midPointPosition.y += stepHeight;
 
-                //Set that the foot is no longer grounded
-                isGrounded = false;
-            }
+            //===========================================================
+            //Insert obstacle detection here to avoid kicking an obstacle
+            //===========================================================
+
+            //Update the new targeted position to where the ray hit the ground
+            newTargetPosition = rayHitPosition;
+
+            //Reset the total elapsed movement time
+            horizontalElapsedTime = 0.0f;
+            verticalElapsedTime = 0.0f;
+
+            //Set that the foot is no longer grounded
+            isGrounded = false;
         }
     }
 
@@ -133,6 +141,11 @@ public class IK_LegArmature : InverseKinematicArm
     public bool IsGrounded()
     {
         return isGrounded;
+    }
+
+    public float DistanceToTarget()
+    {
+        return Vector3.Distance(transform.position, rayHitPosition);
     }
 
     #endregion
