@@ -1648,6 +1648,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chainLength: 2
+  bone: {fileID: 5951368517144503677, guid: 1d04eece04e17ed4caf5a577886c6dfa, type: 3}
+  boneThickness: 0.5
   target: {fileID: 2073640764}
   pole: {fileID: 981595768}
   iterations: 1
@@ -2149,6 +2151,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chainLength: 2
+  bone: {fileID: 5951368517144503677, guid: 1d04eece04e17ed4caf5a577886c6dfa, type: 3}
+  boneThickness: 0.5
   target: {fileID: 86509768}
   pole: {fileID: 104047105}
   iterations: 1

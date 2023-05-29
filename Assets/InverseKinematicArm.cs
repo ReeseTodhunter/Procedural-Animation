@@ -10,6 +10,11 @@ public class InverseKinematicArm : MonoBehaviour
     protected int chainLength = 3; //Length of the armature
 
     [SerializeField]
+    protected GameObject bone; //Bone for visuals
+    [SerializeField]
+    protected float boneThickness = 0.5f;
+
+    [SerializeField]
     protected Transform target; //Position the armature end will try to reach
     [SerializeField]
     protected Transform pole; //Position of the pole the armature will attempt to bend towards
@@ -18,6 +23,8 @@ public class InverseKinematicArm : MonoBehaviour
     protected int iterations = 10; //How many times to iterate the armature's calculations
     [SerializeField]
     protected float delta = 1.0f; //Minimum desired calculated distance from the target
+
+    protected List<GameObject> visualBones; //A list of all of the visual bones
 
     protected float[] bonesLength; //List of each individual bone length
     protected float completeLength; //How long in total the armature is
@@ -38,6 +45,8 @@ public class InverseKinematicArm : MonoBehaviour
         bones = new Transform[chainLength + 1];
         positions = new Vector3[chainLength + 1];
         bonesLength = new float[chainLength];
+
+        visualBones = new List<GameObject>();
 
         completeLength = 0;
 
@@ -65,6 +74,40 @@ public class InverseKinematicArm : MonoBehaviour
     protected virtual void LateUpdate()
     {
         InverseKinematics();
+        UpdateVisuals();
+    }
+
+    #endregion
+
+    #region Armature Visual
+
+    private void UpdateVisuals()
+    {
+        //If there is a bone to use
+        if (bone != null)
+        {
+            //Set the starting current transform
+            var current = this.transform;
+
+            //For each node on the armature with a parent
+            for (int i = 0; i < chainLength && current != null && current.parent != null; i++)
+            {
+                //If there is not a bone in the list for the current node
+                if (visualBones.Count - 1 < i)
+                {
+                    //Instantiate a new bone and add it to the list
+                    visualBones.Add(Instantiate(bone, current));
+                }
+                //Position the current bone inbetween the current node and it's parent node
+                visualBones[i].transform.position = current.position + ((current.parent.position - current.position) / 2);
+                //Rotate the current bone to the rotation towards the parent node
+                visualBones[i].transform.rotation = Quaternion.FromToRotation(Vector3.up, current.parent.position - current.position);
+                //Scale the bone based on the selected bone thickness and the distance to the current node's parent
+                visualBones[i].transform.localScale = new Vector3(boneThickness, Vector3.Distance(current.parent.position, current.position), boneThickness);
+                //Update the current node to the parent node for next loop
+                current = current.parent;
+            }
+        }
     }
 
     #endregion
