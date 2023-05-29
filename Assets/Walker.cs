@@ -29,6 +29,8 @@ public class Walker : MonoBehaviour
 
     private Vector3 directionToCastRay; //Storage for raycast direction
 
+    private int i = 0;
+
     private void Start()
     {
         Init();
@@ -176,7 +178,10 @@ public class Walker : MonoBehaviour
 
     private void UpdateLegs()
     {
-        int i = 0;
+        if (i >= 100)
+        {
+            i -= 100;
+        }
         //For all of the pairs of legs
         foreach (legPair pair in legPairs)
         {

@@ -7,6 +7,9 @@ public class IK_LegArmature : InverseKinematicArm
     #region Armature Target Movement Variables
 
     [SerializeField]
+    private float stepTolerance = 0.1f; //How far from the target the step can be
+
+    [SerializeField]
     private float stepTime = 1.0f; //Time taken to complete a step
 
     [SerializeField]
@@ -59,8 +62,8 @@ public class IK_LegArmature : InverseKinematicArm
 
     private void UpdateTargetPosition()
     {
-        //If the current target position is not at the new Target position
-        if (target.position != newTargetPosition)
+        //If the current target position is further away from the new target position than the step tolerance
+        if (Vector3.Distance(target.position, newTargetPosition) > stepTolerance)
         {
             //Update the total elapsed time moving
             horizontalElapsedTime += Time.deltaTime;
