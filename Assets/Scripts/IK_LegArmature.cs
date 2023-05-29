@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IK_LegArmature : InverseKinematicArm
+public class IK_LegArmature : IK_Armature
 {
     #region Armature Target Movement Variables
 

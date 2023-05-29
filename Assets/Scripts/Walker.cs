@@ -66,7 +66,7 @@ public class Walker : MonoBehaviour
         for (int i = 0; i < legs.Count; i += 2)
         {
             //if the leg has a pairing leg available
-            if (i + 1 <= legs.Count)
+            if (i + 1 < legs.Count)
             {
                 //Check that the legs aren't null values
                 if (legs[i] != null && legs[i + 1] != null)
@@ -192,16 +192,16 @@ public class Walker : MonoBehaviour
                 pair.legOne.CheckMovement(currentVelocity);
                 pair.legTwo.CheckMovement(currentVelocity);
 
-                //If leg two is grounded and it's leg one's turn to move
-                if (pair.legTwo.IsGrounded() && (i % 2 == 0))
+                //If leg two is grounded and it's leg one's turn to move or if both legs in the pair are the same leg
+                if ((pair.legTwo.IsGrounded() && (i % 2 == 0)) || pair.legTwo == pair.legOne)
                 {
                     //Update leg one's target positioning
                     pair.legOne.UpdateTarget();
                     i++;
                 }
-                if (pair.legOne.IsGrounded() && (i % 2 != 0))
+                if ((pair.legOne.IsGrounded() && (i % 2 != 0)) || pair.legOne == pair.legTwo)
                 {
-                    //Otherwise if leg one is grounded and it's leg two's turn to move
+                    //Otherwise if leg one is grounded and it's leg two's turn to move or if both legs in the pair are the same leg update leg two's positioning
                     pair.legTwo.UpdateTarget();
                     i++;
                 }
