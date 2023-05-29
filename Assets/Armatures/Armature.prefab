@@ -109,7 +109,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1287024353428741465}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -19.198198, y: 0, z: 0}
+  m_LocalPosition: {x: -14.89, y: 5.62, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 1287024353676466155}
   - component: {fileID: 1287024353676466152}
   - component: {fileID: 1287024353676466153}
-  - component: {fileID: 1287024353676466154}
+  - component: {fileID: 8208053798631639180}
   m_Layer: 6
   m_Name: LeftFoot (1)
   m_TagString: Untagged
@@ -250,7 +250,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1287024353676466154
+--- !u!114 &8208053798631639180
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -259,11 +259,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1287024353676466148}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e0066f87072d6c4b8a16b85e9f75ad4, type: 3}
+  m_Script: {fileID: 11500000, guid: 382613e8cc2c82943b1bac6073689705, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   chainLength: 3
   bone: {fileID: 5951368517144503677, guid: 1d04eece04e17ed4caf5a577886c6dfa, type: 3}
+  boneThickness: 0.5
   target: {fileID: 1287024353428741464}
   pole: {fileID: 1287024353154743396}
   iterations: 1

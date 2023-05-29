@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class IK_Armature : MonoBehaviour
 {
-    #region Armature Base Variables
+     #region Armature Base Variables
 
     [SerializeField]
     protected int chainLength = 3; //Length of the armature
@@ -84,39 +84,6 @@ public class IK_Armature : MonoBehaviour
 
     #endregion
 
-    #region Armature Visual
-
-    private void UpdateVisuals()
-    {
-        //If there is a bone to use
-        if (bone != null)
-        {
-            //Set the starting current transform
-            var current = this.transform;
-
-            //For each node on the armature with a parent
-            for (int i = 0; i < chainLength && current != null && current.parent != null; i++)
-            {
-                //If there is not a bone in the list for the current node
-                if (visualBones.Count - 1 < i)
-                {
-                    //Instantiate a new bone and add it to the list
-                    visualBones.Add(Instantiate(bone, current));
-                }
-                //Position the current bone inbetween the current node and it's parent node
-                visualBones[i].transform.position = current.position + ((current.parent.position - current.position) / 2);
-                //Rotate the current bone to the rotation towards the parent node
-                visualBones[i].transform.rotation = Quaternion.FromToRotation(Vector3.up, current.parent.position - current.position);
-                //Scale the bone based on the selected bone thickness and the distance to the current node's parent
-                visualBones[i].transform.localScale = new Vector3(boneThickness, Vector3.Distance(current.parent.position, current.position), boneThickness);
-                //Update the current node to the parent node for next loop
-                current = current.parent;
-            }
-        }
-    }
-
-    #endregion
-
     #region Calculate Armature Joint Positioning
 
     private void InverseKinematics()
@@ -132,7 +99,7 @@ public class IK_Armature : MonoBehaviour
 
         //Calculate new bone positions
         //If the target position is further away than the armature can reach move bones to the closest point they can reach
-        if ((target.position - bones[0].position).sqrMagnitude >= completeLength * completeLength)
+        if (Vector3.Distance(target.position, bones[0].position) >= completeLength)
         {
             Vector3 direction = (target.position - positions[0]).normalized;
             //Set position of all bones after the root bone
@@ -190,6 +157,39 @@ public class IK_Armature : MonoBehaviour
 
         //Set bone positions
         for (int i = 0; i < positions.Length; i++) bones[i].position = positions[i];
+    }
+
+    #endregion
+
+    #region Armature Visual
+
+    private void UpdateVisuals()
+    {
+        //If there is a bone to use
+        if (bone != null)
+        {
+            //Set the starting current transform
+            var current = this.transform;
+
+            //For each node on the armature with a parent
+            for (int i = 0; i < chainLength && current != null && current.parent != null; i++)
+            {
+                //If there is not a bone in the list for the current node
+                if (visualBones.Count - 1 < i)
+                {
+                    //Instantiate a new bone and add it to the list
+                    visualBones.Add(Instantiate(bone, current));
+                }
+                //Position the current bone inbetween the current node and it's parent node
+                visualBones[i].transform.position = current.position + ((current.parent.position - current.position) / 2);
+                //Rotate the current bone to the rotation towards the parent node
+                visualBones[i].transform.rotation = Quaternion.FromToRotation(Vector3.up, current.parent.position - current.position);
+                //Scale the bone based on the selected bone thickness and the distance to the current node's parent
+                visualBones[i].transform.localScale = new Vector3(boneThickness, Vector3.Distance(current.parent.position, current.position), boneThickness);
+                //Update the current node to the parent node for next loop
+                current = current.parent;
+            }
+        }
     }
 
     #endregion

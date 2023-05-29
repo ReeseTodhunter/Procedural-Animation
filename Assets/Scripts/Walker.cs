@@ -111,7 +111,6 @@ public class Walker : MonoBehaviour
     private void UpdateWalkerBody()
     {
         RaycastHit hit;
-        //currentHeightLeeway = heightLeeway;
         directionToCastRay = new Vector3(currentVelocity.x, (Mathf.Sin(Mathf.Acos(currentVelocity.magnitude / (walkerHeight * (currentVelocity.magnitude + 1)))) * (walkerHeight * (currentVelocity.magnitude + 1))), currentVelocity.z).normalized;
 
         //Lower the walker down when in motion
