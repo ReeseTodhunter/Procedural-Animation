@@ -9,25 +9,25 @@ public class Walker : MonoBehaviour
 
     public List<legPair> legPairs;
 
-    public float setWalkerHeight = 7.0f;
+    public float setWalkerHeight = 7.0f; //Defined usual height of walker
+    public float minWalkerHeight = 4.0f; //The minimum height the walker is allowed to go to
 
-    public float minDistanceFromRoof = 1.0f;
-    public float minHeightLeeway = 0.1f;
-    public float maxHeightLeeway = 1.0f;
+    public float minDistanceFromRoof = 1.0f; //How far from an overhead obstacle the walker should attempt to be
+    public float heightLeeway = 0.1f; //How far off the desired height the walker can be
 
-    public float walkSpeed = 5.0f;
-    public float rotateSpeed = 3.0f;
+    public float walkSpeed = 5.0f; //Speed walker will move 
+    public float turnSpeed = 10.0f; //Speed walker will turn
 
-    private Vector3 currentPosition;
-    private Vector3 currentVelocity;
+    private Vector3 currentPosition; //Current position of walker
+    private Vector3 currentVelocity; //Current velocity of walker
 
-    private float currentDistanceFromFloor;
-    private float currentDistanceFromRoof;
+    private float currentDistanceFromFloor; //Current height above the floor
+    private float currentDistanceFromRoof; //Current distance from overhead obstacle
 
-    private float currentHeightLeeway;
-    private float walkerHeight;
+    private float currentHeightLeeway; //How far away from the desired height the walker can currently be
+    private float walkerHeight; //Current height the walker is aiming to be at
 
-    private Vector3 directionToCastRay;
+    private Vector3 directionToCastRay; //Storage for raycast direction
 
     private void Start()
     {
@@ -39,6 +39,7 @@ public class Walker : MonoBehaviour
         MoveWalker();
         UpdateWalkerBody();
         UpdateLegs();
+        CheckQuit();
     }
 
     private void Init()
@@ -47,7 +48,7 @@ public class Walker : MonoBehaviour
         currentPosition = transform.position;
 
         //Setup the starting height leeway
-        currentHeightLeeway = minHeightLeeway;
+        currentHeightLeeway = heightLeeway;
 
         //Setup the starting walker height
         walkerHeight = setWalkerHeight;
@@ -91,24 +92,30 @@ public class Walker : MonoBehaviour
         //Update the walker's current position
         currentPosition = transform.position;
 
-        //Allow player to control walker with arrow keys / WASD
+        //Allow player to control walker with WASD
         if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
         {
             transform.position += transform.right * Input.GetAxisRaw("Horizontal") * walkSpeed * Time.deltaTime;
             transform.position += transform.forward * Input.GetAxisRaw("Vertical") * walkSpeed * Time.deltaTime;
+        }
+
+        //Rotate the walker with the arrow keys
+        if (Input.GetAxisRaw("Turn") != 0)
+        {
+            transform.eulerAngles += Vector3.up * Input.GetAxisRaw("Turn") * turnSpeed * Time.deltaTime;
         }
     }
 
     private void UpdateWalkerBody()
     {
         RaycastHit hit;
-        currentHeightLeeway = minHeightLeeway;
+        //currentHeightLeeway = heightLeeway;
         directionToCastRay = new Vector3(currentVelocity.x, (Mathf.Sin(Mathf.Acos(currentVelocity.magnitude / (walkerHeight * (currentVelocity.magnitude + 1)))) * (walkerHeight * (currentVelocity.magnitude + 1))), currentVelocity.z).normalized;
 
         //Lower the walker down when in motion
         if (currentVelocity.magnitude > 0 && walkerHeight == setWalkerHeight)
         {
-            walkerHeight -= minHeightLeeway * 10;
+            walkerHeight -= heightLeeway * 4;
         }
         //Raise back up to full height when stopped
         else if (currentVelocity.magnitude <= 0)
@@ -124,24 +131,42 @@ public class Walker : MonoBehaviour
             //If the ray hits and the walker is closer to the collision point than the minimum distance from the roof
             if (currentDistanceFromRoof < minDistanceFromRoof)
             {
-
-                currentHeightLeeway = maxHeightLeeway;
-                transform.position -= Vector3.up * walkSpeed * Time.deltaTime;
+                //If the walker is above their minimum height
+                if (currentDistanceFromFloor > minWalkerHeight)
+                {
+                    //Increase the current amount of height leeway
+                    currentHeightLeeway += heightLeeway;
+                    //And lower the walker
+                    transform.position -= Vector3.up * walkSpeed * Time.deltaTime;
+                }
+            }
+            //Otherwise if the distance to the roof is greater than the minimum distance or the walker is lower than their minimum height and the current height leeway is bigger than the base leeway
+            else if ((currentDistanceFromRoof > minDistanceFromRoof || (currentDistanceFromFloor < minWalkerHeight)) && currentHeightLeeway > heightLeeway)
+            {
+                //decrease the current height leeway
+                currentHeightLeeway -= heightLeeway;
             }
         }
         //If the ray hits nothing reset the current distance from roof
         else
         {
             currentDistanceFromRoof = minDistanceFromRoof + 1;
+            //Also reset the current height leeway
+            currentHeightLeeway = heightLeeway;
         }
+
         //Fire a ray down and forwards to check for distance from the floor
         if (Physics.Raycast(transform.position, new Vector3(directionToCastRay.x, -directionToCastRay.y, directionToCastRay.z), out hit, Mathf.Infinity, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore))
         {
+            //Store the current distance to the floor
             currentDistanceFromFloor = Vector3.Distance(transform.position, hit.point);
+            //If the distance to the floor is less than the walker height - the height leeway
             if (currentDistanceFromFloor < walkerHeight - currentHeightLeeway)
             {
+                //Raise the walker's position up
                 transform.position += Vector3.up * walkSpeed * Time.deltaTime;
             }
+            //Otherwise if the distance to the floor is greater than the walkerHeight + currentLeeway
             else if (currentDistanceFromFloor > walkerHeight + currentHeightLeeway)
             {
                 transform.position -= Vector3.up * walkSpeed * Time.deltaTime;
@@ -175,17 +200,29 @@ public class Walker : MonoBehaviour
                     pair.legTwo.UpdateTarget();
                     i++;
                 }
-                Debug.Log(i);
             }
+        }
+    }
+
+    private void CheckQuit()
+    {
+        //If player presses Escape quit game
+        if (Input.GetButton("Quit"))
+        {
+            Application.Quit();
         }
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
+        //Draw ray cast to roof
         Gizmos.DrawLine(transform.position, transform.position + directionToCastRay * (walkerHeight * (currentVelocity.magnitude + 1)));
+        //Draw ray cast to floor
         Gizmos.DrawLine(transform.position, transform.position + new Vector3(directionToCastRay.x, -directionToCastRay.y, directionToCastRay.z) * (walkerHeight * (currentVelocity.magnitude + 1)));
     }
+
+    //Struct for storing legArmatures
     public struct legPair
     {
         public IK_LegArmature legOne;

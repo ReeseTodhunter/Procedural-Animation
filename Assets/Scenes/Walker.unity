@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 19771111}
   - component: {fileID: 19771114}
   - component: {fileID: 19771113}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RightRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -218,7 +218,7 @@ GameObject:
   - component: {fileID: 48332475}
   - component: {fileID: 48332478}
   - component: {fileID: 48332477}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sphere 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -385,7 +385,7 @@ GameObject:
   - component: {fileID: 104047105}
   - component: {fileID: 104047104}
   - component: {fileID: 104047103}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LeftPole
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -468,7 +468,7 @@ GameObject:
   - component: {fileID: 119753597}
   - component: {fileID: 119753600}
   - component: {fileID: 119753599}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sphere 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -843,7 +843,7 @@ GameObject:
   - component: {fileID: 478250373}
   - component: {fileID: 478250376}
   - component: {fileID: 478250375}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1117,7 +1117,7 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -1201,7 +1201,7 @@ GameObject:
   - component: {fileID: 981595768}
   - component: {fileID: 981595771}
   - component: {fileID: 981595770}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RightPole
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1363,7 +1363,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1104833080}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 18.64, y: -7, z: -0.15}
+  m_LocalPosition: {x: 32, y: -7, z: 24.79}
   m_LocalScale: {x: 14.51069, y: 7.497902, z: 7.497902}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1381,7 +1381,7 @@ GameObject:
   - component: {fileID: 1204430859}
   - component: {fileID: 1204430862}
   - component: {fileID: 1204430861}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LeftRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1463,7 +1463,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1264701528}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LeftLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1495,7 +1495,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1298704106}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Poles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1528,7 +1528,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1388483548}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1563,7 +1563,7 @@ GameObject:
   - component: {fileID: 1399156851}
   - component: {fileID: 1399156850}
   - component: {fileID: 1399156852}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RightFoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1745,7 +1745,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1431399584}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 23.24, y: 4, z: 23.85}
+  m_LocalPosition: {x: 2.2, y: 4, z: 14.2}
   m_LocalScale: {x: 20, y: 0.1, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1893,7 +1893,7 @@ GameObject:
   - component: {fileID: 1789144979}
   - component: {fileID: 1789144980}
   - component: {fileID: 1789144981}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Walker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1935,14 +1935,12 @@ MonoBehaviour:
   legs:
   - {fileID: 2008896357}
   - {fileID: 1399156852}
-  - {fileID: 0}
-  - {fileID: 0}
-  walkerHeight: 8
-  minDistanceFromCeiling: 8
-  minHeightLeeway: 0.1
-  maxHeightLeeway: 2
+  setWalkerHeight: 7
+  minWalkerHeight: 4
+  minDistanceFromRoof: 5
+  heightLeeway: 0.1
   walkSpeed: 5
-  rotateSpeed: 3
+  turnSpeed: 50
 --- !u!65 &1789144981
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2066,7 +2064,7 @@ GameObject:
   - component: {fileID: 2008896356}
   - component: {fileID: 2008896355}
   - component: {fileID: 2008896357}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LeftFoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2167,7 +2165,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2033408174}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RightLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
