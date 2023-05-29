@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//This base script was initally made using the DitzelGames Inverse Kinematics in Unity video found here:
+//https://www.youtube.com/watch?v=qqOAzn05fvk&t=1558s
+//Github repo: https://github.com/ditzel/SimpleIK
+//This script has been rewritten and further adapted personally
+
 public class IK_Armature : MonoBehaviour
 {
     #region Armature Base Variables
