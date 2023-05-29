@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
 public class InverseKinematicArm : MonoBehaviour
 {
@@ -150,16 +149,20 @@ public class InverseKinematicArm : MonoBehaviour
     #region Gizmos
     protected virtual void OnDrawGizmos()
     {
+        Matrix4x4 baseMatrix = Gizmos.matrix;
         var current = this.transform;
         for (int i = 0; i < chainLength && current != null && current.parent != null; i++)
         {
             //for each node in the armature draw a wire box between them as connectors
             float scale = Vector3.Distance(current.position, current.parent.position) * 0.1f;
-            Handles.matrix = Matrix4x4.TRS(current.position, Quaternion.FromToRotation(Vector3.up, current.parent.position - current.position), new Vector3(scale, Vector3.Distance(current.parent.position, current.position), scale));
-            Handles.color = Color.red;
-            Handles.DrawWireCube(Vector3.up * 0.5f, Vector3.one);
+            Gizmos.matrix = Matrix4x4.TRS(current.position, Quaternion.FromToRotation(Vector3.up, current.parent.position - current.position), new Vector3(scale, Vector3.Distance(current.parent.position, current.position), scale));
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireCube(Vector3.up * 0.5f, Vector3.one);
             current = current.parent;
         }
+
+        Gizmos.color = Color.white;
+        Gizmos.matrix = baseMatrix;
     }
 
     #endregion
