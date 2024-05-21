@@ -25,6 +25,9 @@ public class IK_Armature : MonoBehaviour
     protected Transform pole; //Position of the pole the armature will attempt to bend towards
 
     [SerializeField]
+    protected bool usePole = true; //Whether or not to use the pole when positioning nodes
+
+    [SerializeField]
     protected int iterations = 10; //How many times to iterate the armature's calculations
     [SerializeField]
     protected float delta = 1.0f; //Minimum desired calculated distance from the target
@@ -134,8 +137,8 @@ public class IK_Armature : MonoBehaviour
             }
         }
 
-        //Move to bend towards the pole
-        if (pole != null)
+        //If there is a pole stored and using the pole move to bend towards the pole
+        if (pole != null && usePole)
         {
             //for every position after the end point on the armature
             for (int i = 1; i < positions.Length - 1; i++)
